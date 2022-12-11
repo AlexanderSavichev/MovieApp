@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="FavouriteView">
+        <!--2-->
+        <attr name="faceColor" format="color" />
+        <attr name="linesColor" format="color" />
+        <attr name="tongueColor" format="color" />
+        <attr name="borderWidth" format="dimension" />
+        <attr name="state" format="enum">
+            <enum name="happy" value="0" />
+            <enum name="neutral" value="1" />
+            <enum name="sad" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>
