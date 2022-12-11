@@ -8,20 +8,22 @@
 
     <Switch
         android:id="@+id/sw"
-        android:theme="@style/SCBSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DarkMode Switch"
+        android:text="@string/darkmode_switch"
+        android:theme="@style/SCBSwitch"
         app:layout_constraintBottom_toTopOf="@id/recyclerViewMovies"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMovies"
         app:layout_constraintTop_toBottomOf="@id/sw"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/movie_item"/>
 
     <ProgressBar
         android:id="@+id/progressLoading"

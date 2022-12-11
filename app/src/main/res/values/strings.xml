@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">KinopoiskAPI</string>
+    <string name="like">Like:</string>
+    <string name="kp">KP:</string>
+    <string name="imdb">IMDB:</string>
+    <string name="darkmode_switch">DarkMode Switch</string>
 </resources>

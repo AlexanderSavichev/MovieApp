@@ -11,25 +11,29 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class MainViewModel: AndroidViewModel {
-    constructor(application: Application) : super(application)
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    val movies:MutableLiveData<List<Movie>> = MutableLiveData()
+    val movies:MutableLiveData<MutableList<Movie>> = MutableLiveData()
 
 
     private val compositeDisposable:CompositeDisposable = CompositeDisposable()
     private var page:Int = 1
 
-    public fun loadMovies() {
-        var disposable: Disposable =
+    fun loadMovies() {
+        val disposable: Disposable =
             ApiFactory.apiService.loadMovies(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {value ->
+                    val loadedMovies: MutableList<Movie>? = movies.value
+                    if (loadedMovies != null){
+                        loadedMovies.addAll(value.movies)
+                        movies.setValue(loadedMovies)}
+                    else
+                        movies.setValue(value.movies)
                     page++
-                    movies.setValue(value.movies)
-                    Log.d("TAG123", movies.toString())
+                    Log.d("PAGE", page.toString())
                 },
                 {value -> println("Recieved: $value") }
             )

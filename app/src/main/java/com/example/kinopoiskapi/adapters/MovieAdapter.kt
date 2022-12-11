@@ -1,7 +1,6 @@
 package com.example.kinopoiskapi.adapters
 
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,33 +11,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kinopoiskapi.R
 import com.example.kinopoiskapi.models.Movie
-import com.google.gson.JsonObject
-import org.json.JSONObject
+import com.example.kinopoiskapi.views.FavouriteView
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
-    var movies: List<Movie> = ArrayList()
+    var movies: MutableList<Movie> = ArrayList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-
-    class MovieViewHolder : RecyclerView.ViewHolder {
-        var imageViewPoster: ImageView
-        var textViewRatingKP: TextView
-        var textViewRatingIMDB: TextView
-        var textViewDescription: TextView
-
-
-        constructor(itemView: View) : super(itemView) {
-            imageViewPoster = itemView.findViewById(R.id.imageViewPoster)
-            textViewRatingKP = itemView.findViewById(R.id.textViewRatingKP)
-            textViewRatingIMDB = itemView.findViewById(R.id.textViewRatingIMDB)
-            textViewDescription = itemView.findViewById(R.id.textViewDescription)
-        }
+    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var imageViewPoster: ImageView = itemView.findViewById(R.id.imageViewPoster)
+        var textViewRatingKP: TextView = itemView.findViewById(R.id.textViewRatingKP)
+        var textViewRatingIMDB: TextView = itemView.findViewById(R.id.textViewRatingIMDB)
+        var textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
+        var favouriteView: FavouriteView = itemView.findViewById(R.id.cvSmile)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MovieViewHolder(view)
@@ -64,9 +55,10 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         return movies.size
     }
 
+
     fun setColorOfRatingKp(movie: Movie): Int {
-        var ratingKP: Double = movie.rating.kp
-        var backgroundIdKp: Int
+        val ratingKP: Double = movie.rating.kp
+        val backgroundIdKp: Int
 
         if (ratingKP >= 7)
             backgroundIdKp = R.drawable.rating_green
@@ -79,8 +71,8 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     }
 
     fun setColorOfRatingImdb(movie: Movie): Int {
-        var ratingIMDB: Double = movie.rating.imdb
-        var backgroundIdImdb: Int
+        val ratingIMDB: Double = movie.rating.imdb
+        val backgroundIdImdb: Int
 
         if (ratingIMDB >= 7)
             backgroundIdImdb = R.drawable.rating_green
@@ -91,4 +83,5 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
         return backgroundIdImdb
     }
+
 }
