@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoiskapi.adapters.MovieAdapter
 import com.example.kinopoiskapi.databinding.ActivityMainBinding
 import com.example.kinopoiskapi.viewModels.MainViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,14 +29,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        binding.sw.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            else
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        binding.darkModeButton.setOnClickListener {
+            showDarkModeDialog()
         }
+
         moviesAdapter = MovieAdapter()
         binding.recyclerViewMovies.adapter = moviesAdapter
         binding.recyclerViewMovies.layoutManager =
@@ -47,6 +44,30 @@ class MainActivity : AppCompatActivity() {
         viewModel.loadMovies()
         initSchrollListener()
 
+    }
+
+    private fun showDarkModeDialog() {
+        var selectedIndex = 0
+        val items = arrayOf("Dark Mode On", "Dark Mode Off", "Dark Mode Auto")
+        var selectedMode:String = items[selectedIndex]
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Dark mode settings")
+            .setSingleChoiceItems(items, selectedIndex) {dialog, which ->
+                selectedIndex = which
+                selectedMode = items[which]
+            }
+            .setPositiveButton("Ok") {dialog, which ->
+                if (selectedMode == "Dark Mode On")
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else if(selectedMode == "Dark Mode Off")
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                else if(selectedMode == "Dark Mode Auto")
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            .setNegativeButton("Cancel") {dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     fun initSchrollListener() {

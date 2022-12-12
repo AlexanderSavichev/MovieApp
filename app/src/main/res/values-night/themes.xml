@@ -21,7 +21,4 @@
         <item name="darkBlueColor">@color/dark_blue</item>
     </style>
 
-    <style name="SCBSwitch" parent="">
-        <item name="android:colorControlActivated">@color/purple_200</item>
-    </style>
 </resources>
