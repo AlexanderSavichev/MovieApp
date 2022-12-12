@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kinopoiskapi.R
@@ -19,10 +20,14 @@ import com.example.kinopoiskapi.views.FavouriteView.Companion.SAD
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     var movies: MutableList<Movie> = ArrayList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+
+    fun setData(newList: List<Movie>) {
+        val diffCallback = MovieDiffCallback(movies, newList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        movies.clear()
+        movies.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imageViewPoster: ImageView = itemView.findViewById(R.id.imageViewPoster)

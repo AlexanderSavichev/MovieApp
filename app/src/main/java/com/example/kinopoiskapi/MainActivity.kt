@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.movies.observe(this) { t ->
-            moviesAdapter.movies = t
+            moviesAdapter.setData(t)
         }
         viewModel.loadMovies()
         initSchrollListener()
