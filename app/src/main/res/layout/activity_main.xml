@@ -18,6 +18,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMovies"
         app:layout_constraintTop_toBottomOf="@id/sw"

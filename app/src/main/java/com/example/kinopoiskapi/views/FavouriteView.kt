@@ -2,6 +2,8 @@ package com.example.kinopoiskapi.views
 
 import android.content.Context
 import android.graphics.*
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import com.example.kinopoiskapi.R
@@ -54,7 +56,21 @@ class FavouriteView(context: Context, attrs: AttributeSet) : View(context, attrs
         typedArray.recycle()
     }
 
+    override fun onSaveInstanceState(): Parcelable {
+        val bundle = Bundle()
+        bundle.putLong("happinessState", happinessState)
+        bundle.putParcelable("superState", super.onSaveInstanceState())
+        return bundle
+    }
 
+    override fun onRestoreInstanceState(state: Parcelable) {
+        var viewState = state
+        if (viewState is Bundle) {
+            happinessState = viewState.getLong("happinessState", HAPPY)
+            viewState = viewState.getParcelable("superState")!!
+        }
+        super.onRestoreInstanceState(viewState)
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -62,7 +78,8 @@ class FavouriteView(context: Context, attrs: AttributeSet) : View(context, attrs
         drawFaceBackground(canvas)
         drawEyes(canvas)
         drawMouth(canvas)
-//        drawTongue(canvas)
+        if(happinessState== HAPPY)
+            drawTongue(canvas)
     }
 
 
@@ -102,19 +119,20 @@ class FavouriteView(context: Context, attrs: AttributeSet) : View(context, attrs
 
     private fun drawMouth(canvas: Canvas) {
         mouthPath.reset()
-        mouthPath.moveTo(size * 0.2f, size * 0.6f)
+
         if (happinessState == HAPPY) {
-            // 1
-            mouthPath.quadTo(size * 0.50f, size * 0.6f, size * 0.85f, size * 0.60f)
+            mouthPath.moveTo(size * 0.2f, size * 0.6f)
+            mouthPath.quadTo(size * 0.50f, size * 0.6f, size * 0.8f, size * 0.60f)
             mouthPath.quadTo(size * 0.50f, size * 1.20f, size * 0.2f, size * 0.60f)
         } else if(happinessState == NEUTRAL){
-            // 2
-            mouthPath.quadTo(size * 0.50f, size * 0.6f, size * 0.85f, size * 0.63f)
+            mouthPath.moveTo(size * 0.2f, size * 0.6f)
+            mouthPath.quadTo(size * 0.50f, size * 0.6f, size * 0.8f, size * 0.63f)
             mouthPath.quadTo(size * 0.50f, size * 0.66f, size * 0.2f, size * 0.60f)
         }
         else{
-            mouthPath.quadTo(size * 0.50f, size * 0.4f, size * 0.85f, size * 0.5f)
-            mouthPath.quadTo(size * 0.50f, size * 0.5f, size * 0.2f, size * 0.60f)
+            mouthPath.moveTo(size * 0.2f, size * 0.8f)
+            mouthPath.quadTo(size * 0.50f, size * 0.4f, size * 0.8f, size * 0.8f)
+            mouthPath.quadTo(size * 0.50f, size * 0.6f, size * 0.2f, size * 0.8f)
         }
 
         paint.color = linesColor
@@ -122,13 +140,13 @@ class FavouriteView(context: Context, attrs: AttributeSet) : View(context, attrs
         canvas.drawPath(mouthPath, paint)
     }
 
-//    private fun drawTongue(canvas: Canvas) {
-//        tonguePath.reset()
-//        paint.color = tongueColor
-//        paint.style = Paint.Style.FILL
-//        tonguePath.moveTo(size * 0.4f, size * 0.8f)
-//        tonguePath.quadTo(size * 0.50f, size * 0.7f, size * 0.6f, size * 0.8f)
-//        tonguePath.quadTo(size * 0.50f, size * 0.9f, size * 0.4f, size * 0.8f)
-//        canvas.drawPath(tonguePath, paint)
-//    }
+    private fun drawTongue(canvas: Canvas) {
+        tonguePath.reset()
+        paint.color = tongueColor
+        paint.style = Paint.Style.FILL
+        tonguePath.moveTo(size * 0.4f, size * 0.8f)
+        tonguePath.quadTo(size * 0.50f, size * 0.7f, size * 0.6f, size * 0.8f)
+        tonguePath.quadTo(size * 0.50f, size * 0.9f, size * 0.4f, size * 0.8f)
+        canvas.drawPath(tonguePath, paint)
+    }
 }

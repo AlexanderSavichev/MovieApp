@@ -1,7 +1,7 @@
 package com.example.kinopoiskapi
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoiskapi.adapters.MovieAdapter
 import com.example.kinopoiskapi.databinding.ActivityMainBinding
 import com.example.kinopoiskapi.viewModels.MainViewModel
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
             else
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-
         moviesAdapter = MovieAdapter()
         binding.recyclerViewMovies.adapter = moviesAdapter
         binding.recyclerViewMovies.layoutManager =
@@ -64,3 +63,5 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
+
