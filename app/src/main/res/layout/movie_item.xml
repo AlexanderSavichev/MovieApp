@@ -8,7 +8,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="?attr/darkBlueColor"
+        android:background="?attr/itemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -29,15 +29,9 @@
 
         <TextView
             android:id="@+id/tvFavourites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
             android:text="@string/like"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            style="@style/TextAppearance.Rating"
+            android:textAppearance="?attr/textAppearancePopupMenuHeader"
             app:layout_constraintEnd_toStartOf="@id/cvSmile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/textViewRatingKP"/>
@@ -55,57 +49,26 @@
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textViewRatingKP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="11sp"
-            app:layout_constraintStart_toEndOf="@id/KP"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tvFavourites"
-            tools:background="@drawable/rating_green"
-            tools:text="8.0" />
-
-        <TextView
             android:id="@+id/KP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
             android:text="@string/kp"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            style="@style/TextAppearance.Rating"
+            android:textAppearance="?attr/textAppearancePopupMenuHeader"
             app:layout_constraintStart_toEndOf="@id/textViewRatingIMDB"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/textViewRatingKP" />
 
         <TextView
             android:id="@+id/IMDB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
+            android:textAppearance="?attr/textAppearancePopupMenuHeader"
+            style="@style/TextAppearance.Rating"
             android:text="@string/imdb"
-            android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/imageViewPoster"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/textViewRatingIMDB" />
 
         <TextView
             android:id="@+id/textViewRatingIMDB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="11sp"
+            style="@style/TextAppearance.RatingRound"
             app:layout_constraintStart_toEndOf="@id/IMDB"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/KP"
@@ -113,11 +76,19 @@
             tools:text="8.0" />
 
         <TextView
+            android:id="@+id/textViewRatingKP"
+            style="@style/TextAppearance.RatingRound"
+            app:layout_constraintStart_toEndOf="@id/KP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvFavourites"
+            tools:background="@drawable/rating_green"
+            tools:text="8.0" />
+
+        <TextView
             android:id="@+id/textViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceCaption"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imageViewPoster"
