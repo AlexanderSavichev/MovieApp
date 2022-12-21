@@ -13,9 +13,6 @@ import com.bumptech.glide.Glide
 import com.example.kinopoiskapi.R
 import com.example.kinopoiskapi.models.Movie
 import com.example.kinopoiskapi.views.FavouriteView
-import com.example.kinopoiskapi.views.FavouriteView.Companion.HAPPY
-import com.example.kinopoiskapi.views.FavouriteView.Companion.NEUTRAL
-import com.example.kinopoiskapi.views.FavouriteView.Companion.SAD
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
@@ -59,12 +56,12 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         holder.textViewRatingIMDB.setText(movie.rating.imdb.toString())
         holder.textViewDescription.setText(movie.shortDescription)
         holder.cvSmile.setOnClickListener {
-            if ((it as FavouriteView).happinessState == NEUTRAL)
-                it.happinessState = HAPPY
-            else if(it.happinessState == HAPPY)
-                it.happinessState = SAD
-            else if(it.happinessState == SAD)
-                it.happinessState = NEUTRAL
+            if ((it as FavouriteView).happinessState == FavouriteView.Happiness.NEUTRAL.param)
+                it.happinessState = FavouriteView.Happiness.HAPPY.param
+            else if(it.happinessState == FavouriteView.Happiness.HAPPY.param)
+                it.happinessState = FavouriteView.Happiness.SAD.param
+            else if(it.happinessState == FavouriteView.Happiness.SAD.param)
+                it.happinessState = FavouriteView.Happiness.NEUTRAL.param
         }
     }
 

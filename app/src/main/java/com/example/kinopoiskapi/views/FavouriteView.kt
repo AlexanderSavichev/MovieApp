@@ -8,145 +8,171 @@ import android.util.AttributeSet
 import android.view.View
 import com.example.kinopoiskapi.R
 
-class FavouriteView(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    companion object {
-        private const val DEFAULT_FACE_COLOR = Color.GRAY
-        private const val DEFAULT_LINES_COLOR = Color.BLACK
-        private const val DEFAULT_TONGUE_COLOR = Color.RED
-        private const val DEFAULT_BORDER_WIDTH = 4.0f
+private const val DEFAULT_FACE_COLOR = Color.GRAY
+private const val DEFAULT_LINES_COLOR = Color.BLACK
+private const val DEFAULT_TONGUE_COLOR = Color.RED
+private const val DEFAULT_BORDER_WIDTH = 0.8F
+private const val DEFAULT_RADIUS = 33F
 
-        const val HAPPY = 0L
-        const val NEUTRAL = 1L
-        const val SAD = 2L
+class FavouriteView
+@JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = R.attr.favouriteViewStyle,
+    defStyleRs: Int = R.style.FavouriteViewStyle
+) : View(context, attrs, defStyleAttr, defStyleRs) {
+    companion object {
+        private const val HAPPINESS = "happinessState"
+        private const val STATE = "superState"
     }
 
+    enum class Happiness(val param: Long) {
+        HAPPY(0L),
+        NEUTRAL(1L),
+        SAD(2L)
+    }
 
-    private val paint = Paint()
-    private var faceColor = Color.GRAY
-    private var linesColor = Color.BLACK
-    private var tongueColor = Color.RED
-    private var borderWidth = 4.0f
-
+    private var faceColor = DEFAULT_FACE_COLOR
+    private var linesColor = DEFAULT_LINES_COLOR
+    private var tongueColor = DEFAULT_TONGUE_COLOR
+    private var borderWidth = context.toDp(DEFAULT_BORDER_WIDTH)
     private val tonguePath = Path()
     private val mouthPath = Path()
-    private var size = 80
+    private var size = context.toDp(DEFAULT_RADIUS)
+    private var startX = size * 0.2f
+    private var startY = size * 0.6f
+    private var middleX = size * 0.5f
+    private var endPoint = size * 0.8f
+    private var tonguePoint = size *0.4f
 
-    var happinessState = HAPPY
+    var happinessState = Happiness.HAPPY.param
         set(state) {
             field = state
             invalidate()
         }
 
-    init {
-        paint.isAntiAlias = true
-        setupAttributes(attrs)
-    }
-
-    private fun setupAttributes(attrs: AttributeSet?) {
-        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.FavouriteView,
-            0, 0)
-
-        happinessState = typedArray.getInt(R.styleable.FavouriteView_state, NEUTRAL.toInt()).toLong()
+    private fun setupAttributes(attrs: AttributeSet?, defStyleAttr: Int, defStyleRs: Int) {
+        val typedArray = context.theme.obtainStyledAttributes(
+            attrs, R.styleable.FavouriteView,
+            defStyleAttr, defStyleRs
+        )
+        happinessState =
+            typedArray.getInt(R.styleable.FavouriteView_state, Happiness.NEUTRAL.param.toInt())
+                .toLong()
         faceColor = typedArray.getColor(R.styleable.FavouriteView_faceColor, DEFAULT_FACE_COLOR)
         linesColor = typedArray.getColor(R.styleable.FavouriteView_linesColor, DEFAULT_LINES_COLOR)
-        tongueColor = typedArray.getColor(R.styleable.FavouriteView_tongueColor, DEFAULT_TONGUE_COLOR)
-        borderWidth = typedArray.getDimension(R.styleable.FavouriteView_borderWidth,
-            DEFAULT_BORDER_WIDTH)
-
+        tongueColor =
+            typedArray.getColor(R.styleable.FavouriteView_tongueColor, DEFAULT_TONGUE_COLOR)
+        borderWidth = typedArray.getDimension(
+            R.styleable.FavouriteView_borderWidth,
+            context.toDp(DEFAULT_BORDER_WIDTH)
+        )
         typedArray.recycle()
+    }
+
+    private val paintShapes: Paint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.FILL
+            strokeWidth = context.toDp(borderWidth)
+        }
+    }
+
+    init {
+        attrs?.let { setupAttributes(it, defStyleAttr, defStyleRs) }
+    }
+
+    private val paintLines: Paint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            color = linesColor
+            strokeWidth = context.toDp(borderWidth)
+        }
     }
 
     override fun onSaveInstanceState(): Parcelable {
         val bundle = Bundle()
-        bundle.putLong("happinessState", happinessState)
-        bundle.putParcelable("superState", super.onSaveInstanceState())
+        bundle.putLong(HAPPINESS, happinessState)
+        bundle.putParcelable(STATE, super.onSaveInstanceState())
         return bundle
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
         var viewState = state
         if (viewState is Bundle) {
-            happinessState = viewState.getLong("happinessState", HAPPY)
-            viewState = viewState.getParcelable("superState")!!
+            happinessState = viewState.getLong(HAPPINESS, Happiness.HAPPY.param)
+            viewState = viewState.getParcelable(STATE)!!
         }
         super.onRestoreInstanceState(viewState)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
         drawFaceBackground(canvas)
         drawEyes(canvas)
         drawMouth(canvas)
-        if(happinessState== HAPPY)
+        if (happinessState == Happiness.HAPPY.param)
             drawTongue(canvas)
     }
 
-
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        setMeasuredDimension(size, size)
+        setMeasuredDimension(
+            resolveSize(size.toInt(), widthMeasureSpec) + paddingLeft + paddingRight,
+            resolveSize(size.toInt(), heightMeasureSpec) + paddingTop + paddingBottom
+        )
     }
 
     private fun drawFaceBackground(canvas: Canvas) {
-        if(happinessState == HAPPY){
-            paint.color = Color.YELLOW
+        when (happinessState) {
+            Happiness.HAPPY.param -> paintShapes.color = Color.YELLOW
+            Happiness.SAD.param -> paintShapes.color = Color.RED
+            Happiness.NEUTRAL.param -> paintShapes.color = Color.GRAY
         }
-        else if (happinessState == SAD){
-            paint.color = Color.RED
-        }
-        else
-            paint.color = Color.GRAY
-
-        paint.style = Paint.Style.FILL
         val radius = size / 2f
-        canvas.drawCircle(size / 2f, size / 2f, radius, paint)
-        paint.color = linesColor
-        paint.style = Paint.Style.STROKE
-        paint.strokeWidth = borderWidth
-        canvas.drawCircle(size / 2f, size / 2f, radius - borderWidth / 2f, paint)
+        canvas.drawCircle(radius, radius, radius, paintShapes)
+        canvas.drawCircle(radius, radius, radius - paintLines.strokeWidth / 2f, paintLines)
     }
 
     private fun drawEyes(canvas: Canvas) {
-        paint.color = linesColor
-        paint.style = Paint.Style.FILL
-        val leftEyeRect = RectF(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f)
-        canvas.drawOval(leftEyeRect, paint)
-        val rightEyeRect = RectF(size * 0.57f, size * 0.23f, size * 0.68f, size * 0.50f)
-        canvas.drawOval(rightEyeRect, paint)
+        paintShapes.color = linesColor
+        val leftEyeRect = RectF(size * 0.32f, size * 0.23f, size * 0.43f, middleX)
+        canvas.drawOval(leftEyeRect, paintShapes)
+        val rightEyeRect = RectF(size * 0.57f, size * 0.23f, size * 0.68f, middleX)
+        canvas.drawOval(rightEyeRect, paintShapes)
     }
 
     private fun drawMouth(canvas: Canvas) {
         mouthPath.reset()
-
-        if (happinessState == HAPPY) {
-            mouthPath.moveTo(size * 0.2f, size * 0.6f)
-            mouthPath.quadTo(size * 0.50f, size * 0.6f, size * 0.8f, size * 0.60f)
-            mouthPath.quadTo(size * 0.50f, size * 1.20f, size * 0.2f, size * 0.60f)
-        } else if(happinessState == NEUTRAL){
-            mouthPath.moveTo(size * 0.2f, size * 0.6f)
-            mouthPath.quadTo(size * 0.50f, size * 0.6f, size * 0.8f, size * 0.63f)
-            mouthPath.quadTo(size * 0.50f, size * 0.66f, size * 0.2f, size * 0.60f)
+        when (happinessState) {
+            Happiness.HAPPY.param -> {
+                mouthPath.moveTo(startX, startY)
+                mouthPath.quadTo(middleX, startY, endPoint, startY)
+                mouthPath.quadTo(middleX, size * 1.20f, startX, startY)
+            }
+            Happiness.NEUTRAL.param -> {
+                mouthPath.moveTo(startX, startY)
+                mouthPath.quadTo(middleX, startY, endPoint, startY)
+                mouthPath.quadTo(middleX, size * 0.66f, startX, startY)
+            }
+            Happiness.SAD.param -> {
+                mouthPath.moveTo(startX, endPoint)
+                mouthPath.quadTo(middleX, tonguePoint, endPoint, endPoint)
+                mouthPath.quadTo(middleX, startY, startX, endPoint)
+            }
         }
-        else{
-            mouthPath.moveTo(size * 0.2f, size * 0.8f)
-            mouthPath.quadTo(size * 0.50f, size * 0.4f, size * 0.8f, size * 0.8f)
-            mouthPath.quadTo(size * 0.50f, size * 0.6f, size * 0.2f, size * 0.8f)
-        }
-
-        paint.color = linesColor
-        paint.style = Paint.Style.FILL
-        canvas.drawPath(mouthPath, paint)
+        canvas.drawPath(mouthPath, paintShapes)
     }
 
     private fun drawTongue(canvas: Canvas) {
         tonguePath.reset()
-        paint.color = tongueColor
-        paint.style = Paint.Style.FILL
-        tonguePath.moveTo(size * 0.4f, size * 0.8f)
-        tonguePath.quadTo(size * 0.50f, size * 0.7f, size * 0.6f, size * 0.8f)
-        tonguePath.quadTo(size * 0.50f, size * 0.9f, size * 0.4f, size * 0.8f)
-        canvas.drawPath(tonguePath, paint)
+        paintShapes.color = tongueColor
+        tonguePath.moveTo(tonguePoint, endPoint)
+        tonguePath.quadTo(middleX, size * 0.7f, startY, endPoint)
+        tonguePath.quadTo(middleX, size * 0.9f, tonguePoint, endPoint)
+        canvas.drawPath(tonguePath, paintShapes)
+    }
+
+    fun Context.toDp(value: Float): Float {
+        return resources.displayMetrics.density * value
     }
 }

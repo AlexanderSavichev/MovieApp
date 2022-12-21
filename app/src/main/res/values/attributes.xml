@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <declare-styleable name="FavouriteView">
-        <!--2-->
         <attr name="faceColor" format="color" />
         <attr name="linesColor" format="color" />
         <attr name="tongueColor" format="color" />
@@ -14,4 +12,15 @@
             <enum name="sad" value="2" />
         </attr>
     </declare-styleable>
+
+    <attr name="favouriteViewStyle" format="reference" />
+
+    <style name="FavouriteViewStyle">
+        <item name="faceColor">@color/neutral</item>
+        <item name="linesColor">@color/black</item>
+        <item name="tongueColor">@color/red</item>
+        <item name="borderWidth">0.8dp</item>
+        <item name="state">neutral</item>
+    </style>
+
 </resources>
