@@ -33,6 +33,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     else
                         movies.setValue(value.movies)
                     page++
+
                     Log.d("PAGE", page.toString())
                 },
                 {value -> println("Recieved: $value") }

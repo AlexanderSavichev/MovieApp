@@ -8,6 +8,9 @@ data class Movie(@SerializedName("id") val id: Int,
                  @SerializedName("shortDescription") val shortDescription: String,
                  @SerializedName("year") val year: Int,
                  @SerializedName("poster") val poster: Poster,
-                 @SerializedName("rating") val rating: Rating)
+                 @SerializedName("rating") val rating: Rating,
+                 var isFavourite:Boolean,
+                 var isBad:Boolean)
+
 
 

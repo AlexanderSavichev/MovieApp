@@ -20,10 +20,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMovies"
-        app:layout_constraintTop_toBottomOf="@id/darkModeButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/movie_item"/>
+        app:layout_constraintTop_toBottomOf="@id/darkModeButton"
+        tools:listitem="@layout/movie_item"
+        tools:ignore="MissingConstraints" />
 
     <ProgressBar
         android:id="@+id/progressLoading"

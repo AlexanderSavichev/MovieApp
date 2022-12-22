@@ -1,5 +1,6 @@
 package com.example.kinopoiskapi
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoiskapi.adapters.MovieAdapter
+import com.example.kinopoiskapi.adapters.OnReachEndListener
 import com.example.kinopoiskapi.databinding.ActivityMainBinding
 import com.example.kinopoiskapi.viewModels.MainViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -16,7 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var moviesAdapter: MovieAdapter
-    private lateinit var binding:ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,47 +39,36 @@ class MainActivity : AppCompatActivity() {
             moviesAdapter.setData(t)
         }
         viewModel.loadMovies()
-        initSchrollListener()
-
+        moviesAdapter.setOnReachEndListener(object : OnReachEndListener {
+            override fun onReachEnd() {
+                viewModel.loadMovies()
+            }
+        })
     }
 
     private fun showDarkModeDialog() {
         var selectedIndex = 0
         val items = arrayOf("Dark Mode On", "Dark Mode Off", "Dark Mode Auto")
-        var selectedMode:String = items[selectedIndex]
+        var selectedMode: String = items[selectedIndex]
         MaterialAlertDialogBuilder(this)
             .setTitle("Dark mode settings")
-            .setSingleChoiceItems(items, selectedIndex) {dialog, which ->
+            .setSingleChoiceItems(items, selectedIndex) { dialog, which ->
                 selectedIndex = which
                 selectedMode = items[which]
             }
-            .setPositiveButton("Ok") {dialog, which ->
+            .setPositiveButton("Ok") { dialog, which ->
                 if (selectedMode == "Dark Mode On")
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                else if(selectedMode == "Dark Mode Off")
+                else if (selectedMode == "Dark Mode Off")
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                else if(selectedMode == "Dark Mode Auto")
+                else if (selectedMode == "Dark Mode Auto")
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
-            .setNegativeButton("Cancel") {dialog, which ->
+            .setNegativeButton("Cancel") { dialog, which ->
                 dialog.dismiss()
             }
             .show()
     }
-
-    fun initSchrollListener() {
-        binding.recyclerViewMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val recyclerViewManager: LinearLayoutManager =
-                    binding.recyclerViewMovies.layoutManager as LinearLayoutManager
-                if (recyclerViewManager.findLastVisibleItemPosition() == moviesAdapter.movies.size - 1)
-                    viewModel.loadMovies()
-            }
-        })
-    }
-
-
 }
 
 
