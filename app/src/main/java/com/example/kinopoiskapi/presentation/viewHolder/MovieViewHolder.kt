@@ -1,4 +1,4 @@
-package com.example.kinopoiskapi.viewHolder
+package com.example.kinopoiskapi.presentation.viewHolder
 
 import android.graphics.drawable.Drawable
 import android.view.MotionEvent
@@ -10,12 +10,17 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.models.Movie
-import com.example.kinopoiskapi.service.RatingDefiner
-import com.example.kinopoiskapi.views.FavouriteView
+import com.example.kinopoiskapi.data.models.Movie
+import com.example.kinopoiskapi.domain.service.RatingDefiner
+import com.example.kinopoiskapi.presentation.views.FavouriteView
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    companion object{
+        const val DURATION = 100L
+        const val PRESSED_ANIMATION = 1.2F
+        const val UNPRESSED_ANIMATION = 1.0F
+    }
     val imageViewPoster: ImageView = itemView.findViewById(R.id.imageViewPoster)
     val textViewRatingKP: TextView = itemView.findViewById(R.id.textViewRatingKP)
     val textViewRatingIMDB: TextView = itemView.findViewById(R.id.textViewRatingIMDB)
@@ -57,13 +62,17 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    view.animate().scaleX(1.20f).scaleY(1.20f).setDuration(100).start()
+                    view.animate().scaleX(PRESSED_ANIMATION).scaleY(PRESSED_ANIMATION).setDuration(
+                        DURATION
+                    ).start()
                     (itemView.parent as RecyclerView).addOnItemTouchListener(object :
                         RecyclerView.OnItemTouchListener {
                         override fun onInterceptTouchEvent(rv: RecyclerView,
                                                            e: MotionEvent): Boolean {
                             if (rv.scrollState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                                view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                                view.animate().scaleX(UNPRESSED_ANIMATION).scaleY(
+                                    UNPRESSED_ANIMATION
+                                ).setDuration(DURATION).start()
                             }
                             return false               }
                         override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
@@ -72,7 +81,9 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                                                                  Boolean) { }})
                 }
                 MotionEvent.ACTION_UP -> {
-                    view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                    view.animate().scaleX(UNPRESSED_ANIMATION).scaleY(UNPRESSED_ANIMATION).setDuration(
+                        DURATION
+                    ).start()
                     view.performClick()
                 }
             }

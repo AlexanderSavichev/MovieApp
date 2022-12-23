@@ -1,4 +1,4 @@
-package com.example.kinopoiskapi.adapters
+package com.example.kinopoiskapi.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.models.Movie
-import com.example.kinopoiskapi.viewHolder.MovieViewHolder
+import com.example.kinopoiskapi.data.models.Movie
+import com.example.kinopoiskapi.domain.service.MovieDiffCallback
+import com.example.kinopoiskapi.presentation.viewHolder.MovieViewHolder
 
 
 class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {

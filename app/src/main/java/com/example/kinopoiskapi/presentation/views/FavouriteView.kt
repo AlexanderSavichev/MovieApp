@@ -1,4 +1,4 @@
-package com.example.kinopoiskapi.views
+package com.example.kinopoiskapi.presentation.views
 
 import android.content.Context
 import android.graphics.*

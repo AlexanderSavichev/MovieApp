@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kinopoiskapi.adapters.MovieAdapter
-import com.example.kinopoiskapi.adapters.OnReachEndListener
+import com.example.kinopoiskapi.presentation.adapters.MovieAdapter
+import com.example.kinopoiskapi.presentation.adapters.OnReachEndListener
 import com.example.kinopoiskapi.databinding.ActivityMainBinding
-import com.example.kinopoiskapi.viewModels.MainViewModel
+import com.example.kinopoiskapi.presentation.viewModels.MainViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 

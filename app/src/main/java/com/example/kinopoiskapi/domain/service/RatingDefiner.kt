@@ -1,7 +1,7 @@
-package com.example.kinopoiskapi.service
+package com.example.kinopoiskapi.domain.service
 
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.models.Movie
+import com.example.kinopoiskapi.data.models.Movie
 
 
 class RatingDefiner {

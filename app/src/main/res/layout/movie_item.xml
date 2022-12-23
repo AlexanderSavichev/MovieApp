@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         >
 
-        <com.example.kinopoiskapi.views.FavouriteView
+        <com.example.kinopoiskapi.presentation.views.FavouriteView
             android:id="@+id/cvSmile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

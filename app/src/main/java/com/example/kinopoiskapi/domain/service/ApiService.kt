@@ -1,6 +1,6 @@
-package com.example.kinopoiskapi.service
+package com.example.kinopoiskapi.domain.service
 
-import com.example.kinopoiskapi.models.MovieResponse
+import com.example.kinopoiskapi.data.models.MovieResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
