@@ -38,12 +38,19 @@ class FavouriteView
     private var borderWidth = context.toDp(DEFAULT_BORDER_WIDTH)
     private val tonguePath = Path()
     private val mouthPath = Path()
-    private var size = context.toDp(DEFAULT_RADIUS)
-    private var startX = size * 0.2f
-    private var startY = size * 0.6f
-    private var middleX = size * 0.5f
-    private var endPoint = size * 0.8f
-    private var tonguePoint = size *0.4f
+    private val size = context.toDp(DEFAULT_RADIUS)
+    private val startX = size * 0.2f
+    private val startY = size * 0.6f
+    private val middleX = size * 0.5f
+    private val endPoint = size * 0.8f
+    private val tonguePoint = size *0.4f
+    private val topRound = size * 0.23f
+    private val leftEyeLeft = size * 0.32f
+    private val rightEyeRight = size * 0.68f
+    private val leftEyeRight = size * 0.43f
+    private val rightEyeLeft = size * 0.57f
+    private val mouthEndY = size * 1.20f
+    private val tongueY = size * 0.9f
 
     var happinessState = Happiness.HAPPY.param
         set(state) {
@@ -135,9 +142,9 @@ class FavouriteView
 
     private fun drawEyes(canvas: Canvas) {
         paintShapes.color = linesColor
-        val leftEyeRect = RectF(size * 0.32f, size * 0.23f, size * 0.43f, middleX)
+        val leftEyeRect = RectF(leftEyeLeft, topRound, leftEyeRight, middleX)
         canvas.drawOval(leftEyeRect, paintShapes)
-        val rightEyeRect = RectF(size * 0.57f, size * 0.23f, size * 0.68f, middleX)
+        val rightEyeRect = RectF(rightEyeLeft, topRound, rightEyeRight, middleX)
         canvas.drawOval(rightEyeRect, paintShapes)
     }
 
@@ -147,12 +154,12 @@ class FavouriteView
             Happiness.HAPPY.param -> {
                 mouthPath.moveTo(startX, startY)
                 mouthPath.quadTo(middleX, startY, endPoint, startY)
-                mouthPath.quadTo(middleX, size * 1.20f, startX, startY)
+                mouthPath.quadTo(middleX, mouthEndY, startX, startY)
             }
             Happiness.NEUTRAL.param -> {
                 mouthPath.moveTo(startX, startY)
                 mouthPath.quadTo(middleX, startY, endPoint, startY)
-                mouthPath.quadTo(middleX, size * 0.66f, startX, startY)
+                mouthPath.quadTo(middleX, rightEyeRight, startX, startY)
             }
             Happiness.SAD.param -> {
                 mouthPath.moveTo(startX, endPoint)
@@ -167,8 +174,8 @@ class FavouriteView
         tonguePath.reset()
         paintShapes.color = tongueColor
         tonguePath.moveTo(tonguePoint, endPoint)
-        tonguePath.quadTo(middleX, size * 0.7f, startY, endPoint)
-        tonguePath.quadTo(middleX, size * 0.9f, tonguePoint, endPoint)
+        tonguePath.quadTo(middleX, rightEyeRight, startY, endPoint)
+        tonguePath.quadTo(middleX, tongueY, tonguePoint, endPoint)
         canvas.drawPath(tonguePath, paintShapes)
     }
 
