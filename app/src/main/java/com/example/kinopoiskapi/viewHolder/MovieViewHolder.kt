@@ -1,7 +1,9 @@
 package com.example.kinopoiskapi.viewHolder
 
 import android.graphics.drawable.Drawable
+import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -50,6 +52,33 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         textViewRatingIMDB.text = movie.rating.imdb.toString()
         textViewDescription.text = movie.shortDescription
 
+        itemView.animation=AnimationUtils.loadAnimation(itemView.context, R.anim.view_anim)
+
+        itemView.setOnTouchListener { view, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    view.animate().scaleX(1.20f).scaleY(1.20f).setDuration(100).start()
+                    (itemView.parent as RecyclerView).addOnItemTouchListener(object :
+                        RecyclerView.OnItemTouchListener {
+                        override fun onInterceptTouchEvent(rv: RecyclerView,
+                                                           e: MotionEvent): Boolean {
+                            if (rv.scrollState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                                view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                            }
+                            return false               }
+                        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+                        override fun
+                            onRequestDisallowInterceptTouchEvent(disallowIntercept:
+                                                                 Boolean) { }})
+                }
+                MotionEvent.ACTION_UP -> {
+                    view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                    view.performClick()
+                }
+            }
+            true
+        }
+
         cvSmile.setOnClickListener {
             if ((it as FavouriteView).happinessState == FavouriteView.Happiness.NEUTRAL.param) {
                 it.happinessState = FavouriteView.Happiness.HAPPY.param
@@ -67,6 +96,4 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         }
     }
-
-
 }
