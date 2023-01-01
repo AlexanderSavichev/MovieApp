@@ -4,8 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.example.kinopoiskapi.data.models.MovieDto
-import com.example.kinopoiskapi.data.remotes.ApiFactory
+import com.example.kinopoiskapi.data.repository.models.MovieDto
+import com.example.kinopoiskapi.data.repository.remotes.ApiFactory
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable

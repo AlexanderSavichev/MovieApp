@@ -1,7 +1,7 @@
 package com.example.kinopoiskapi.presentation.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.kinopoiskapi.data.models.MovieDto
+import com.example.kinopoiskapi.data.repository.models.MovieDto
 
 class MovieDiffCallback(private val oldList: List<MovieDto>, private val newList: List<MovieDto>):DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.data.models.MovieDto
+import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.presentation.viewHolder.MovieViewHolder
 
 

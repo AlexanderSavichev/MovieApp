@@ -1,7 +1,7 @@
 package com.example.kinopoiskapi.presentation.elements
 
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.data.models.MovieDto
+import com.example.kinopoiskapi.data.repository.models.MovieDto
 
 
 class RatingDefiner {

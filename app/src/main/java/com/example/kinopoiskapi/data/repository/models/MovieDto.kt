@@ -1,4 +1,4 @@
-package com.example.kinopoiskapi.data.models
+package com.example.kinopoiskapi.data.repository.models
 
 import com.google.gson.annotations.SerializedName
 

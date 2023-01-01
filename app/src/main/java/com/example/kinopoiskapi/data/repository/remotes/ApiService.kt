@@ -1,6 +1,6 @@
-package com.example.kinopoiskapi.data.remotes
+package com.example.kinopoiskapi.data.repository.remotes
 
-import com.example.kinopoiskapi.data.models.MovieResponse
+import com.example.kinopoiskapi.data.repository.models.MovieResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

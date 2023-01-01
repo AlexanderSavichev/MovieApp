@@ -10,7 +10,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.data.models.MovieDto
+import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.presentation.elements.RatingDefiner
 import com.example.kinopoiskapi.presentation.views.FavouriteView
 import kotlinx.android.synthetic.main.movie_item.view.*
