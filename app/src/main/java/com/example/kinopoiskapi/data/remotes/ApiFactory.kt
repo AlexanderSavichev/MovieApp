@@ -1,4 +1,4 @@
-package com.example.kinopoiskapi.domain.service
+package com.example.kinopoiskapi.data.remotes
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import retrofit2.Retrofit

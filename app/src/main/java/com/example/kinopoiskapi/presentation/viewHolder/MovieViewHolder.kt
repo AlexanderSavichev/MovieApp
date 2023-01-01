@@ -10,8 +10,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.data.models.Movie
-import com.example.kinopoiskapi.domain.service.RatingDefiner
+import com.example.kinopoiskapi.data.models.MovieDto
+import com.example.kinopoiskapi.presentation.elements.RatingDefiner
 import com.example.kinopoiskapi.presentation.views.FavouriteView
 import kotlinx.android.synthetic.main.movie_item.view.*
 
@@ -27,7 +27,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
     val cvSmile: FavouriteView = itemView.findViewById(R.id.cvSmile)
 
-    fun bind(movie: Movie) {
+    fun bind(movie: MovieDto) {
 
         if (movie.isFavourite) {
             itemView.cvSmile.happinessState = FavouriteView.Happiness.HAPPY.param

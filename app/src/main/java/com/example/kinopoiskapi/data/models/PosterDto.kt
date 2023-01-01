@@ -2,4 +2,4 @@ package com.example.kinopoiskapi.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class Rating(@SerializedName("kp") val kp: Double, @SerializedName("imdb") val imdb: Double)
+data class PosterDto(@SerializedName("url") val url: String)

@@ -1,4 +1,4 @@
-package com.example.kinopoiskapi.domain.service
+package com.example.kinopoiskapi.data.remotes
 
 import com.example.kinopoiskapi.data.models.MovieResponse
 import io.reactivex.rxjava3.core.Single

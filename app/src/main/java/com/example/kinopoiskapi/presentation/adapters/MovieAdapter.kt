@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.data.models.Movie
-import com.example.kinopoiskapi.domain.service.MovieDiffCallback
+import com.example.kinopoiskapi.data.models.MovieDto
 import com.example.kinopoiskapi.presentation.viewHolder.MovieViewHolder
 
 
@@ -19,9 +18,9 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
     }
 
 
-    private val movies: MutableList<Movie> = ArrayList()
+    private val movies: MutableList<MovieDto> = ArrayList()
 
-    fun setData(newList: List<Movie>) {
+    fun setData(newList: List<MovieDto>) {
         val diffCallback = MovieDiffCallback(movies, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         movies.clear()
@@ -37,7 +36,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movie: Movie = movies[position]
+        val movie: MovieDto = movies[position]
         holder.bind(movie)
         if (position == movies.size-1 && onReachEndListener!=null){
             onReachEndListener?.onReachEnd()

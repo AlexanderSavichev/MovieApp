@@ -1,7 +1,7 @@
-package com.example.kinopoiskapi.domain.service
+package com.example.kinopoiskapi.presentation.elements
 
 import com.example.kinopoiskapi.R
-import com.example.kinopoiskapi.data.models.Movie
+import com.example.kinopoiskapi.data.models.MovieDto
 
 
 class RatingDefiner {
@@ -9,7 +9,7 @@ class RatingDefiner {
          const val GOOD_RATING = 7
          const val BAD_RATING = 5
     }
-     fun colorOfRatingKp(movie: Movie): Int {
+     fun colorOfRatingKp(movie: MovieDto): Int {
         val ratingKP: Double = movie.rating.kp
         return when {
             ratingKP >= GOOD_RATING ->  R.drawable.rating_green
@@ -18,7 +18,7 @@ class RatingDefiner {
         }
     }
 
-     fun colorOfRatingImdb(movie: Movie): Int {
+     fun colorOfRatingImdb(movie: MovieDto): Int {
         val ratingIMDB: Double = movie.rating.imdb
         return when {
             ratingIMDB >= GOOD_RATING ->  R.drawable.rating_green

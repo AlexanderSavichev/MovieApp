@@ -4,8 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.example.kinopoiskapi.data.models.Movie
-import com.example.kinopoiskapi.domain.service.ApiFactory
+import com.example.kinopoiskapi.data.models.MovieDto
+import com.example.kinopoiskapi.data.remotes.ApiFactory
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    val movies:MutableLiveData<MutableList<Movie>> = MutableLiveData()
+    val movies:MutableLiveData<MutableList<MovieDto>> = MutableLiveData()
 
 
     private val compositeDisposable:CompositeDisposable = CompositeDisposable()
@@ -26,7 +26,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {value ->
-                    val loadedMovies: MutableList<Movie>? = movies.value
+                    val loadedMovies: MutableList<MovieDto>? = movies.value
                     if (loadedMovies != null){
                         loadedMovies.addAll(value.movies)
                         movies.setValue(loadedMovies)}
