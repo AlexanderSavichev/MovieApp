@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoiskapi.R
 import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.presentation.viewHolder.MovieViewHolder
+import com.example.kinopoiskapi.presentation.views.FavouriteView
 
 
-class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
+class MovieAdapter(private val clickListener: SmileClickListener) : RecyclerView.Adapter<MovieViewHolder>() {
 
     private var onReachEndListener: OnReachEndListener? = null
     fun setOnReachEndListener(onReachEndListener: OnReachEndListener) {
@@ -37,7 +38,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie: MovieDto = movies[position]
-        holder.bind(movie)
+        holder.bind(movie, clickListener, position)
         if (position == movies.size-1 && onReachEndListener!=null){
             onReachEndListener?.onReachEnd()
         }
@@ -45,6 +46,9 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun getItemCount(): Int {
         return movies.size
+    }
+    interface SmileClickListener{
+        fun onSmileClick (movie:MovieDto, position: Int, happiness:FavouriteView.Happiness)
     }
 
 }

@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kinopoiskapi.R
 import com.example.kinopoiskapi.data.repository.models.MovieDto
+import com.example.kinopoiskapi.presentation.adapters.MovieAdapter
 import com.example.kinopoiskapi.presentation.elements.RatingDefiner
 import com.example.kinopoiskapi.presentation.views.FavouriteView
 import kotlinx.android.synthetic.main.movie_item.view.*
+
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object{
@@ -21,20 +23,25 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         const val PRESSED_ANIMATION = 1.2F
         const val UNPRESSED_ANIMATION = 1.0F
     }
-    val imageViewPoster: ImageView = itemView.findViewById(R.id.imageViewPoster)
-    val textViewRatingKP: TextView = itemView.findViewById(R.id.textViewRatingKP)
-    val textViewRatingIMDB: TextView = itemView.findViewById(R.id.textViewRatingIMDB)
-    val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
-    val cvSmile: FavouriteView = itemView.findViewById(R.id.cvSmile)
+    private val imageViewPoster: ImageView = itemView.findViewById(R.id.imageViewPoster)
+    private val textViewRatingKP: TextView = itemView.findViewById(R.id.textViewRatingKP)
+    private val textViewRatingIMDB: TextView = itemView.findViewById(R.id.textViewRatingIMDB)
+    private val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
+    private var cvSmile: FavouriteView = itemView.findViewById(R.id.cvSmile)
+    private lateinit var happiness:FavouriteView.Happiness
 
-    fun bind(movie: MovieDto) {
+    fun bind(movie: MovieDto, clickListener: MovieAdapter.SmileClickListener, position:Int) {
 
-        if (movie.isFavourite) {
-            itemView.cvSmile.happinessState = FavouriteView.Happiness.HAPPY.param
+        happiness = if (movie.isFavourite) {
+            itemView.cvSmile.setHappiness(FavouriteView.Happiness.HAPPY)
+            FavouriteView.Happiness.HAPPY
         } else if (movie.isBad) {
-            itemView.cvSmile.happinessState = FavouriteView.Happiness.SAD.param
-        } else
-            itemView.cvSmile.happinessState = FavouriteView.Happiness.NEUTRAL.param
+            itemView.cvSmile.setHappiness(FavouriteView.Happiness.SAD)
+            FavouriteView.Happiness.SAD
+        } else{
+            itemView.cvSmile.setHappiness(FavouriteView.Happiness.NEUTRAL)
+            FavouriteView.Happiness.NEUTRAL
+        }
 
         Glide.with(itemView)
             .load(movie.poster.url)
@@ -89,22 +96,8 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
             true
         }
-
         cvSmile.setOnClickListener {
-            if ((it as FavouriteView).happinessState == FavouriteView.Happiness.NEUTRAL.param) {
-                it.happinessState = FavouriteView.Happiness.HAPPY.param
-                movie.isFavourite = true
-                movie.isBad = false
-            } else if (it.happinessState == FavouriteView.Happiness.HAPPY.param) {
-                it.happinessState = FavouriteView.Happiness.SAD.param
-                movie.isBad = true
-                movie.isFavourite = false
-            } else if (it.happinessState == FavouriteView.Happiness.SAD.param) {
-                it.happinessState = FavouriteView.Happiness.NEUTRAL.param
-                movie.isBad = false
-                movie.isFavourite = false
-            }
-
+            clickListener.onSmileClick(movie, position, happiness)
         }
     }
 }

@@ -1,16 +1,17 @@
 package com.example.kinopoiskapi
 
-import android.graphics.Color
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.presentation.adapters.MovieAdapter
 import com.example.kinopoiskapi.presentation.adapters.OnReachEndListener
 import com.example.kinopoiskapi.databinding.ActivityMainBinding
 import com.example.kinopoiskapi.presentation.viewModels.MainViewModel
+import com.example.kinopoiskapi.presentation.views.FavouriteView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
@@ -30,11 +31,32 @@ class MainActivity : AppCompatActivity() {
             showDarkModeDialog()
         }
 
-        moviesAdapter = MovieAdapter()
+        moviesAdapter = MovieAdapter(object : MovieAdapter.SmileClickListener {
+            override fun onSmileClick(movie: MovieDto, position:Int, happiness:FavouriteView.Happiness) {
+
+                when(happiness){
+                    FavouriteView.Happiness.NEUTRAL -> {
+                        movie.isFavourite = true
+                        movie.isBad = false
+                        binding.recyclerViewMovies.adapter?.notifyItemChanged(position)
+                    }
+                    FavouriteView.Happiness.HAPPY -> {
+                        movie.isBad = true
+                        movie.isFavourite = false
+                        binding.recyclerViewMovies.adapter?.notifyItemChanged(position)
+                    }
+                    FavouriteView.Happiness.SAD -> {
+                        movie.isBad = false
+                        movie.isFavourite = false
+                        binding.recyclerViewMovies.adapter?.notifyItemChanged(position)
+                    }
+                }
+            }
+        })
         binding.recyclerViewMovies.adapter = moviesAdapter
         binding.recyclerViewMovies.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.movies.observe(this) { t ->
             moviesAdapter.setData(t)
         }
@@ -44,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.loadMovies()
             }
         })
+
     }
 
     private fun showDarkModeDialog() {
@@ -52,19 +75,18 @@ class MainActivity : AppCompatActivity() {
         var selectedMode: String = items[selectedIndex]
         MaterialAlertDialogBuilder(this)
             .setTitle("Dark mode settings")
-            .setSingleChoiceItems(items, selectedIndex) { dialog, which ->
+            .setSingleChoiceItems(items, selectedIndex) { _, which ->
                 selectedIndex = which
                 selectedMode = items[which]
             }
-            .setPositiveButton("Ok") { dialog, which ->
-                if (selectedMode == "Dark Mode On")
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                else if (selectedMode == "Dark Mode Off")
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                else if (selectedMode == "Dark Mode Auto")
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            .setPositiveButton("Ok") { _, _ ->
+                when(selectedMode){
+                    "Dark Mode On" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    "Dark Mode Off" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    "Dark Mode Auto" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                }
             }
-            .setNegativeButton("Cancel") { dialog, which ->
+            .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

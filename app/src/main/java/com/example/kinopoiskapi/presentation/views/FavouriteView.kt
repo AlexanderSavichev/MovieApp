@@ -2,17 +2,9 @@ package com.example.kinopoiskapi.presentation.views
 
 import android.content.Context
 import android.graphics.*
-import android.os.Bundle
-import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import com.example.kinopoiskapi.R
-
-private const val DEFAULT_FACE_COLOR = Color.GRAY
-private const val DEFAULT_LINES_COLOR = Color.BLACK
-private const val DEFAULT_TONGUE_COLOR = Color.RED
-private const val DEFAULT_BORDER_WIDTH = 0.8F
-private const val DEFAULT_RADIUS = 33F
 
 class FavouriteView
 @JvmOverloads constructor(
@@ -21,16 +13,6 @@ class FavouriteView
     defStyleAttr: Int = R.attr.favouriteViewStyle,
     defStyleRs: Int = R.style.FavouriteViewStyle
 ) : View(context, attrs, defStyleAttr, defStyleRs) {
-    companion object {
-        private const val HAPPINESS = "happinessState"
-        private const val STATE = "superState"
-    }
-
-    enum class Happiness(val param: Long) {
-        HAPPY(0L),
-        NEUTRAL(1L),
-        SAD(2L)
-    }
 
     private var faceColor = DEFAULT_FACE_COLOR
     private var linesColor = DEFAULT_LINES_COLOR
@@ -51,21 +33,18 @@ class FavouriteView
     private val rightEyeLeft = size * 0.57f
     private val mouthEndY = size * 1.20f
     private val tongueY = size * 0.9f
+    private var happinessState: Happiness = Happiness.NEUTRAL
 
-    var happinessState = Happiness.HAPPY.param
-        set(state) {
-            field = state
-            invalidate()
-        }
+    fun setHappiness(state:Happiness){
+        happinessState = state
+        invalidate()
+    }
 
     private fun setupAttributes(attrs: AttributeSet?, defStyleAttr: Int, defStyleRs: Int) {
         val typedArray = context.theme.obtainStyledAttributes(
             attrs, R.styleable.FavouriteView,
             defStyleAttr, defStyleRs
         )
-        happinessState =
-            typedArray.getInt(R.styleable.FavouriteView_state, Happiness.NEUTRAL.param.toInt())
-                .toLong()
         faceColor = typedArray.getColor(R.styleable.FavouriteView_faceColor, DEFAULT_FACE_COLOR)
         linesColor = typedArray.getColor(R.styleable.FavouriteView_linesColor, DEFAULT_LINES_COLOR)
         tongueColor =
@@ -96,28 +75,12 @@ class FavouriteView
         }
     }
 
-    override fun onSaveInstanceState(): Parcelable {
-        val bundle = Bundle()
-        bundle.putLong(HAPPINESS, happinessState)
-        bundle.putParcelable(STATE, super.onSaveInstanceState())
-        return bundle
-    }
-
-    override fun onRestoreInstanceState(state: Parcelable) {
-        var viewState = state
-        if (viewState is Bundle) {
-            happinessState = viewState.getLong(HAPPINESS, Happiness.HAPPY.param)
-            viewState = viewState.getParcelable(STATE)!!
-        }
-        super.onRestoreInstanceState(viewState)
-    }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawFaceBackground(canvas)
         drawEyes(canvas)
         drawMouth(canvas)
-        if (happinessState == Happiness.HAPPY.param)
+        if (happinessState == Happiness.HAPPY)
             drawTongue(canvas)
     }
 
@@ -131,9 +94,9 @@ class FavouriteView
 
     private fun drawFaceBackground(canvas: Canvas) {
         when (happinessState) {
-            Happiness.HAPPY.param -> paintShapes.color = Color.YELLOW
-            Happiness.SAD.param -> paintShapes.color = Color.RED
-            Happiness.NEUTRAL.param -> paintShapes.color = Color.GRAY
+            Happiness.HAPPY -> paintShapes.color = Color.YELLOW
+            Happiness.SAD -> paintShapes.color = Color.RED
+            Happiness.NEUTRAL -> paintShapes.color = Color.GRAY
         }
         val radius = size / 2f
         canvas.drawCircle(radius, radius, radius, paintShapes)
@@ -151,17 +114,17 @@ class FavouriteView
     private fun drawMouth(canvas: Canvas) {
         mouthPath.reset()
         when (happinessState) {
-            Happiness.HAPPY.param -> {
+            Happiness.HAPPY -> {
                 mouthPath.moveTo(startX, startY)
                 mouthPath.quadTo(middleX, startY, endPoint, startY)
                 mouthPath.quadTo(middleX, mouthEndY, startX, startY)
             }
-            Happiness.NEUTRAL.param -> {
+            Happiness.NEUTRAL -> {
                 mouthPath.moveTo(startX, startY)
                 mouthPath.quadTo(middleX, startY, endPoint, startY)
                 mouthPath.quadTo(middleX, rightEyeRight, startX, startY)
             }
-            Happiness.SAD.param -> {
+            Happiness.SAD -> {
                 mouthPath.moveTo(startX, endPoint)
                 mouthPath.quadTo(middleX, tonguePoint, endPoint, endPoint)
                 mouthPath.quadTo(middleX, startY, startX, endPoint)
@@ -179,7 +142,21 @@ class FavouriteView
         canvas.drawPath(tonguePath, paintShapes)
     }
 
-    fun Context.toDp(value: Float): Float {
+    private fun Context.toDp(value: Float): Float {
         return resources.displayMetrics.density * value
+    }
+
+    companion object {
+        private const val DEFAULT_FACE_COLOR = Color.GRAY
+        private const val DEFAULT_LINES_COLOR = Color.BLACK
+        private const val DEFAULT_TONGUE_COLOR = Color.RED
+        private const val DEFAULT_BORDER_WIDTH = 0.8F
+        private const val DEFAULT_RADIUS = 33F
+    }
+
+    enum class Happiness {
+        HAPPY,
+        NEUTRAL,
+        SAD
     }
 }
