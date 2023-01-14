@@ -95,7 +95,6 @@ class FavouriteView
     private fun drawFaceBackground(canvas: Canvas) {
         when (happinessState) {
             Happiness.HAPPY -> paintShapes.color = Color.YELLOW
-            Happiness.SAD -> paintShapes.color = Color.RED
             Happiness.NEUTRAL -> paintShapes.color = Color.GRAY
         }
         val radius = size / 2f
@@ -124,11 +123,6 @@ class FavouriteView
                 mouthPath.quadTo(middleX, startY, endPoint, startY)
                 mouthPath.quadTo(middleX, rightEyeRight, startX, startY)
             }
-            Happiness.SAD -> {
-                mouthPath.moveTo(startX, endPoint)
-                mouthPath.quadTo(middleX, tonguePoint, endPoint, endPoint)
-                mouthPath.quadTo(middleX, startY, startX, endPoint)
-            }
         }
         canvas.drawPath(mouthPath, paintShapes)
     }
@@ -150,13 +144,12 @@ class FavouriteView
         private const val DEFAULT_FACE_COLOR = Color.GRAY
         private const val DEFAULT_LINES_COLOR = Color.BLACK
         private const val DEFAULT_TONGUE_COLOR = Color.RED
-        private const val DEFAULT_BORDER_WIDTH = 0.8F
-        private const val DEFAULT_RADIUS = 33F
+        private const val DEFAULT_BORDER_WIDTH = 1.0F
+        private const val DEFAULT_RADIUS = 40F
     }
 
     enum class Happiness {
         HAPPY,
-        NEUTRAL,
-        SAD
+        NEUTRAL
     }
 }

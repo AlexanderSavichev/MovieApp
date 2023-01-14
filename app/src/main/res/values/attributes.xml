@@ -9,7 +9,6 @@
         <attr name="state" format="enum">
             <enum name="happy" value="0" />
             <enum name="neutral" value="1" />
-            <enum name="sad" value="2" />
         </attr>
     </declare-styleable>
 

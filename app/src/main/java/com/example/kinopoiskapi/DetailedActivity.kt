@@ -3,8 +3,9 @@ package com.example.kinopoiskapi
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,12 +16,13 @@ import com.example.kinopoiskapi.databinding.ActivityDetailedBinding
 import com.example.kinopoiskapi.presentation.adapters.TrailerAdapter
 import com.example.kinopoiskapi.presentation.elements.RatingDefiner
 import com.example.kinopoiskapi.presentation.viewModels.DetailedViewModel
+import com.example.kinopoiskapi.presentation.views.FavouriteView
 
 
 class DetailedActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailedBinding
-    private lateinit var viewModel:DetailedViewModel
+    private lateinit var viewModel: DetailedViewModel
     private lateinit var adapter: TrailerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,11 +34,14 @@ class DetailedActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[DetailedViewModel::class.java]
 
         val movies: MovieDto = intent.getSerializableExtra(EXTRA_MOVIE) as MovieDto
-        adapter = TrailerAdapter(object : TrailerAdapter.TrailerClickListener{
+        adapter = TrailerAdapter(object : TrailerAdapter.TrailerClickListener {
             override fun onPlayClick(trailer: TrailerDto, position: Int) {
-                println("Click!!!")
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(trailer.url)
+                startActivity(intent)
             }
         })
+        binding.cvSmile.setHappiness(FavouriteView.Happiness.NEUTRAL)
 
         val backgroundKp: Drawable? = ContextCompat.getDrawable(
             this, RatingDefiner().colorOfRatingKp(movies)
@@ -51,11 +56,27 @@ class DetailedActivity : AppCompatActivity() {
             .into(binding.PosterId)
 
         binding.trailerRecycler.adapter = adapter
-        binding.trailerRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.trailerRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         viewModel.loadTrailers(movies.id)
-        viewModel.trailers.observe(this){
+        viewModel.trailers.observe(this) {
             adapter.setData(it)
+        }
+        viewModel.isMovieFavourite(movies.id)?.observe(this) {
+            if (it == null) {
+                binding.cvSmile.setHappiness(FavouriteView.Happiness.NEUTRAL)
+                FavouriteView.Happiness.NEUTRAL
+                binding.cvSmile.setOnClickListener {
+                    viewModel.addMovie(movies)
+                }
+            } else {
+                binding.cvSmile.setHappiness(FavouriteView.Happiness.HAPPY)
+                FavouriteView.Happiness.HAPPY
+                binding.cvSmile.setOnClickListener {
+                    viewModel.removeMovie(movies.id)
+                }
+            }
         }
 
         binding.textViewRatingIMDB.background = backgroundImdb
@@ -67,9 +88,9 @@ class DetailedActivity : AppCompatActivity() {
         binding.DetailedDescriptionId.text = movies.description
     }
 
-    companion object{
+    companion object {
         const val EXTRA_MOVIE = "movie"
-        fun mainIntent(context: Context, movies:MovieDto):Intent{
+        fun mainIntent(context: Context, movies: MovieDto): Intent {
             val intent = Intent(context, DetailedActivity::class.java)
             intent.putExtra(EXTRA_MOVIE, movies)
             return intent

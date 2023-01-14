@@ -12,7 +12,6 @@ import com.example.kinopoiskapi.presentation.adapters.MovieAdapter
 import com.example.kinopoiskapi.presentation.adapters.OnReachEndListener
 import com.example.kinopoiskapi.databinding.ActivityMainBinding
 import com.example.kinopoiskapi.presentation.viewModels.MainViewModel
-import com.example.kinopoiskapi.presentation.views.FavouriteView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.darkModeButton.setOnClickListener {
@@ -33,30 +33,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         moviesAdapter = MovieAdapter(object : MovieAdapter.MovieClickListener {
-            override fun onSmileClick(
-                movie: MovieDto,
-                position: Int,
-                happiness: FavouriteView.Happiness
-            ) {
-
-                when (happiness) {
-                    FavouriteView.Happiness.NEUTRAL -> {
-                        movie.isFavourite = true
-                        movie.isBad = false
-                        binding.recyclerViewMovies.adapter?.notifyItemChanged(position)
-                    }
-                    FavouriteView.Happiness.HAPPY -> {
-                        movie.isBad = true
-                        movie.isFavourite = false
-                        binding.recyclerViewMovies.adapter?.notifyItemChanged(position)
-                    }
-                    FavouriteView.Happiness.SAD -> {
-                        movie.isBad = false
-                        movie.isFavourite = false
-                        binding.recyclerViewMovies.adapter?.notifyItemChanged(position)
-                    }
-                }
-            }
 
             override fun onMovieClick(movie: MovieDto, position: Int) {
                 return startActivity(DetailedActivity.mainIntent(this@MainActivity, movie))

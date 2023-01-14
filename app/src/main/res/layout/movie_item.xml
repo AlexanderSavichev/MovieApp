@@ -13,28 +13,6 @@
         android:layout_height="wrap_content"
         >
 
-        <com.example.kinopoiskapi.presentation.views.FavouriteView
-            android:id="@+id/cvSmile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            app:linesColor="@color/black"
-            app:faceColor="@color/neutral"
-            app:tongueColor="@color/red"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:state = "neutral"/>
-
-
-        <TextView
-            android:id="@+id/tvFavourites"
-            android:text="@string/like"
-            style="@style/TextAppearance.Rating"
-            android:textAppearance="?attr/textAppearancePopupMenuHeader"
-            app:layout_constraintEnd_toStartOf="@id/cvSmile"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/textViewRatingKP"/>
-
         <ImageView
             android:id="@+id/imageViewPoster"
             android:layout_width="wrap_content"
@@ -52,7 +30,6 @@
             android:text="@string/kp"
             style="@style/TextAppearance.Rating"
             android:textAppearance="?attr/textAppearancePopupMenuHeader"
-            app:layout_constraintStart_toEndOf="@id/textViewRatingIMDB"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/textViewRatingKP" />
 
@@ -61,14 +38,14 @@
             android:textAppearance="?attr/textAppearancePopupMenuHeader"
             style="@style/TextAppearance.Rating"
             android:text="@string/imdb"
-            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/textViewRatingIMDB" />
 
         <TextView
             android:id="@+id/textViewRatingIMDB"
             style="@style/TextAppearance.RatingRound"
-            app:layout_constraintStart_toEndOf="@id/IMDB"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/KP"
             tools:background="@drawable/rating_green"
@@ -77,9 +54,8 @@
         <TextView
             android:id="@+id/textViewRatingKP"
             style="@style/TextAppearance.RatingRound"
-            app:layout_constraintStart_toEndOf="@id/KP"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tvFavourites"
             tools:background="@drawable/rating_green"
             tools:text="8.0" />
 

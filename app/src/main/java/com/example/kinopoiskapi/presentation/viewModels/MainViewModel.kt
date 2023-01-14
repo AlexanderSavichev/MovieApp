@@ -14,7 +14,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-
     private val _movies:MutableLiveData<MutableList<MovieDto>> = MutableLiveData()
     val movies: LiveData<MutableList<MovieDto>> = _movies
 

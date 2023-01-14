@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoiskapi.R
 import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.presentation.viewHolder.MovieViewHolder
-import com.example.kinopoiskapi.presentation.views.FavouriteView
+
 
 
 class MovieAdapter(private val clickListener: MovieClickListener) :
@@ -50,7 +50,6 @@ class MovieAdapter(private val clickListener: MovieClickListener) :
     }
 
     interface MovieClickListener {
-        fun onSmileClick(movie: MovieDto, position: Int, happiness: FavouriteView.Happiness)
         fun onMovieClick(movie: MovieDto, position: Int)
     }
 

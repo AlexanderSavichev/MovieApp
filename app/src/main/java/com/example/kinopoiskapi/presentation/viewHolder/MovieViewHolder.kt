@@ -13,8 +13,6 @@ import com.example.kinopoiskapi.R
 import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.presentation.adapters.MovieAdapter
 import com.example.kinopoiskapi.presentation.elements.RatingDefiner
-import com.example.kinopoiskapi.presentation.views.FavouriteView
-import kotlinx.android.synthetic.main.movie_item.view.*
 
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,21 +26,8 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val textViewRatingKP: TextView = itemView.findViewById(R.id.textViewRatingKP)
     private val textViewRatingIMDB: TextView = itemView.findViewById(R.id.textViewRatingIMDB)
     private val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
-    private var cvSmile: FavouriteView = itemView.findViewById(R.id.cvSmile)
-    private lateinit var happiness: FavouriteView.Happiness
 
     fun bind(movie: MovieDto, clickListener: MovieAdapter.MovieClickListener, position: Int) {
-
-        happiness = if (movie.isFavourite) {
-            itemView.cvSmile.setHappiness(FavouriteView.Happiness.HAPPY)
-            FavouriteView.Happiness.HAPPY
-        } else if (movie.isBad) {
-            itemView.cvSmile.setHappiness(FavouriteView.Happiness.SAD)
-            FavouriteView.Happiness.SAD
-        } else {
-            itemView.cvSmile.setHappiness(FavouriteView.Happiness.NEUTRAL)
-            FavouriteView.Happiness.NEUTRAL
-        }
 
         Glide.with(itemView)
             .load(movie.poster.url)
@@ -106,9 +91,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
             true
         }
-        cvSmile.setOnClickListener {
-            clickListener.onSmileClick(movie, position, happiness)
-        }
+
         itemView.setOnClickListener {
             clickListener.onMovieClick(movie, position)
         }
