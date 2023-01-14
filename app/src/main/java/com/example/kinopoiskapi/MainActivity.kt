@@ -13,10 +13,6 @@ import com.example.kinopoiskapi.databinding.ActivityMainBinding
 import com.example.kinopoiskapi.presentation.viewModels.MainViewModel
 import com.example.kinopoiskapi.presentation.views.FavouriteView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,8 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var moviesAdapter: MovieAdapter
     private lateinit var binding: ActivityMainBinding
-    private val coroutineExceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler{ coroutineContext, throwable -> println("$throwable") }
-    private val scope= CoroutineScope(Dispatchers.Main + coroutineExceptionHandler )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,15 +60,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.movies.observe(this) { t ->
             moviesAdapter.setData(t)
         }
-        scope.launch {
-            viewModel.loadMovies()
-        }
-
+        viewModel.loadMovies()
         moviesAdapter.setOnReachEndListener(object : OnReachEndListener {
             override fun onReachEnd() {
-                scope.launch { viewModel.loadMovies() }
+                viewModel.loadMovies()
             }
         })
+
     }
 
     private fun showDarkModeDialog() {
