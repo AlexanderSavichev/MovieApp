@@ -18,19 +18,20 @@ import kotlinx.android.synthetic.main.movie_item.view.*
 
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    companion object{
+    companion object {
         const val DURATION = 100L
         const val PRESSED_ANIMATION = 1.2F
         const val UNPRESSED_ANIMATION = 1.0F
     }
+
     private val imageViewPoster: ImageView = itemView.findViewById(R.id.imageViewPoster)
     private val textViewRatingKP: TextView = itemView.findViewById(R.id.textViewRatingKP)
     private val textViewRatingIMDB: TextView = itemView.findViewById(R.id.textViewRatingIMDB)
     private val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
     private var cvSmile: FavouriteView = itemView.findViewById(R.id.cvSmile)
-    private lateinit var happiness:FavouriteView.Happiness
+    private lateinit var happiness: FavouriteView.Happiness
 
-    fun bind(movie: MovieDto, clickListener: MovieAdapter.SmileClickListener, position:Int) {
+    fun bind(movie: MovieDto, clickListener: MovieAdapter.MovieClickListener, position: Int) {
 
         happiness = if (movie.isFavourite) {
             itemView.cvSmile.setHappiness(FavouriteView.Happiness.HAPPY)
@@ -38,7 +39,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         } else if (movie.isBad) {
             itemView.cvSmile.setHappiness(FavouriteView.Happiness.SAD)
             FavouriteView.Happiness.SAD
-        } else{
+        } else {
             itemView.cvSmile.setHappiness(FavouriteView.Happiness.NEUTRAL)
             FavouriteView.Happiness.NEUTRAL
         }
@@ -64,7 +65,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         textViewRatingIMDB.text = movie.rating.imdb.toString()
         textViewDescription.text = movie.shortDescription
 
-        itemView.animation=AnimationUtils.loadAnimation(itemView.context, R.anim.view_anim)
+        itemView.animation = AnimationUtils.loadAnimation(itemView.context, R.anim.view_anim)
 
         itemView.setOnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
@@ -74,23 +75,32 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     ).start()
                     (itemView.parent as RecyclerView).addOnItemTouchListener(object :
                         RecyclerView.OnItemTouchListener {
-                        override fun onInterceptTouchEvent(rv: RecyclerView,
-                                                           e: MotionEvent): Boolean {
+                        override fun onInterceptTouchEvent(
+                            rv: RecyclerView,
+                            e: MotionEvent
+                        ): Boolean {
                             if (rv.scrollState == RecyclerView.SCROLL_STATE_DRAGGING) {
                                 view.animate().scaleX(UNPRESSED_ANIMATION).scaleY(
                                     UNPRESSED_ANIMATION
                                 ).setDuration(DURATION).start()
                             }
-                            return false               }
+                            return false
+                        }
+
                         override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
                         override fun
-                            onRequestDisallowInterceptTouchEvent(disallowIntercept:
-                                                                 Boolean) { }})
+                                onRequestDisallowInterceptTouchEvent(
+                            disallowIntercept:
+                            Boolean
+                        ) {
+                        }
+                    })
                 }
                 MotionEvent.ACTION_UP -> {
-                    view.animate().scaleX(UNPRESSED_ANIMATION).scaleY(UNPRESSED_ANIMATION).setDuration(
-                        DURATION
-                    ).start()
+                    view.animate().scaleX(UNPRESSED_ANIMATION).scaleY(UNPRESSED_ANIMATION)
+                        .setDuration(
+                            DURATION
+                        ).start()
                     view.performClick()
                 }
             }
@@ -98,6 +108,9 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
         cvSmile.setOnClickListener {
             clickListener.onSmileClick(movie, position, happiness)
+        }
+        itemView.setOnClickListener {
+            clickListener.onMovieClick(movie, position)
         }
     }
 }

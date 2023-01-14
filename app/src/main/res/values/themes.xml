@@ -16,6 +16,7 @@
     </style>
 
     <style name="Theme.KinopoiskAPI.Main" parent="Base.SimpleTheme.KinopoiskAPI">
+        <item name="cardBackgroundColor">@color/paleBlue</item>
         <item name="itemBackground">@color/white</item>
         <item name="android:statusBarColor">@color/purple_700</item>
         <item name="colorPrimary">@color/paleBlue</item>

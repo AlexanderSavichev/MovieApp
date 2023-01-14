@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailedActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/PosterId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars"
+            android:adjustViewBounds="true"
+            />
+
+        <TextView
+            android:id="@+id/DetailedTitleId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            app:layout_constraintTop_toBottomOf="@id/PosterId"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/DetailedYearId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/year"
+            app:layout_constraintTop_toBottomOf="@id/DetailedTitleId"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/IMDB"
+            android:textAppearance="?attr/textAppearancePopupMenuHeader"
+            style="@style/TextAppearance.Rating"
+            android:paddingTop="7dp"
+            android:textSize="16sp"
+            android:text="@string/imdb"
+            app:layout_constraintTop_toBottomOf="@id/DetailedYearId"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewRatingIMDB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/IMDB"
+            app:layout_constraintTop_toBottomOf="@id/DetailedYearId"
+            tools:background="@drawable/rating_green"
+            tools:text="8.0" />
+
+        <TextView
+            android:id="@+id/KP"
+            android:text="@string/kp"
+            android:textSize="16sp"
+            android:paddingTop="7dp"
+            style="@style/TextAppearance.Rating"
+            android:textAppearance="?attr/textAppearancePopupMenuHeader"
+            app:layout_constraintStart_toEndOf="@id/textViewRatingIMDB"
+            app:layout_constraintTop_toBottomOf="@id/DetailedYearId"/>
+
+        <TextView
+            android:id="@+id/textViewRatingKP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/KP"
+            app:layout_constraintTop_toBottomOf="@id/DetailedYearId"
+            tools:background="@drawable/rating_green"
+            tools:text="8.0" />
+
+        <TextView
+            android:id="@+id/DetailedDescriptionId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            app:layout_constraintTop_toBottomOf="@id/IMDB"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="16sp"
+            android:padding="10dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trailerRecycler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/DetailedDescriptionId"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/trailer_item"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

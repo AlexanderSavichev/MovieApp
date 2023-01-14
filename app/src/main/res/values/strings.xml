@@ -4,4 +4,8 @@
     <string name="kp">KP:</string>
     <string name="imdb">IMDB:</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="title">Title</string>
+    <string name="year">Year</string>
+    <string name="description">Description</string>
+    <string name="trailername">TrailerName</string>
 </resources>

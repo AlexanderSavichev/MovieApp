@@ -10,7 +10,7 @@ data class MovieDto(@SerializedName("id") val id: Int,
                     @SerializedName("poster") val poster: PosterDto,
                     @SerializedName("rating") val rating: RatingDto,
                     var isFavourite:Boolean,
-                    var isBad:Boolean)
+                    var isBad:Boolean):java.io.Serializable
 
 
 

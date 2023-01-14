@@ -2,6 +2,7 @@ package com.example.kinopoiskapi
 
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -31,10 +32,14 @@ class MainActivity : AppCompatActivity() {
             showDarkModeDialog()
         }
 
-        moviesAdapter = MovieAdapter(object : MovieAdapter.SmileClickListener {
-            override fun onSmileClick(movie: MovieDto, position:Int, happiness:FavouriteView.Happiness) {
+        moviesAdapter = MovieAdapter(object : MovieAdapter.MovieClickListener {
+            override fun onSmileClick(
+                movie: MovieDto,
+                position: Int,
+                happiness: FavouriteView.Happiness
+            ) {
 
-                when(happiness){
+                when (happiness) {
                     FavouriteView.Happiness.NEUTRAL -> {
                         movie.isFavourite = true
                         movie.isBad = false
@@ -52,6 +57,10 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            override fun onMovieClick(movie: MovieDto, position: Int) {
+                return startActivity(DetailedActivity.mainIntent(this@MainActivity, movie))
+            }
         })
         binding.recyclerViewMovies.adapter = moviesAdapter
         binding.recyclerViewMovies.layoutManager =
@@ -60,7 +69,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.movies.observe(this) { t ->
             moviesAdapter.setData(t)
         }
-        viewModel.loadMovies()
+        if (savedInstanceState == null)
+            viewModel.loadMovies()
+        viewModel.isLoading.observe(this) { loading ->
+            if (loading)
+                binding.progressLoading.visibility = View.VISIBLE
+            else
+                binding.progressLoading.visibility = View.GONE
+        }
         moviesAdapter.setOnReachEndListener(object : OnReachEndListener {
             override fun onReachEnd() {
                 viewModel.loadMovies()
@@ -80,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                 selectedMode = items[which]
             }
             .setPositiveButton("Ok") { _, _ ->
-                when(selectedMode){
+                when (selectedMode) {
                     "Dark Mode On" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     "Dark Mode Off" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     "Dark Mode Auto" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

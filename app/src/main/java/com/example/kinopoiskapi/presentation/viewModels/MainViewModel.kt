@@ -14,17 +14,30 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
+
     private val _movies:MutableLiveData<MutableList<MovieDto>> = MutableLiveData()
     val movies: LiveData<MutableList<MovieDto>> = _movies
+
+    private val _isLoading:MutableLiveData<Boolean> = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val compositeDisposable:CompositeDisposable = CompositeDisposable()
     private var page:Int = 1
 
     fun loadMovies() {
+        if (_isLoading.value == true)
+            return
         val disposable: Disposable =
             ApiFactory.apiService.loadMovies(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    _isLoading.value = true
+                }
+                .doAfterTerminate {
+                    _isLoading.value = false
+                }
+
             .subscribe(
                 {value ->
                     val loadedMovies: MutableList<MovieDto>? = movies.value
