@@ -1,9 +1,11 @@
 package com.example.kinopoiskapi.presentation.viewModels
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kinopoiskapi.ActivityPreferences
 import com.example.kinopoiskapi.data.repository.database.MovieDatabase
 import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.data.repository.models.TrailerDto
@@ -42,9 +44,10 @@ class DetailedViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun loadTrailers(id: Int) {
+    fun loadTrailers(id: Int, context: Context) {
+        val token: String? = ActivityPreferences().getToken(context)
         val disposable: Disposable =
-            ApiFactory.apiService.loadTrailers(id)
+            ApiFactory.apiService.loadTrailers(id, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

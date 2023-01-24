@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityPreferences">
+
+    <TextView
+        android:id="@+id/settingsTV"
+        style="@style/TitleTextView"
+        android:text="@string/Settings"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/darkModeTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/darkModeTV"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/settingsTV" />
+
+    <RadioGroup
+        android:id="@+id/darkModeGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/darkModeTV">
+
+        <RadioButton
+            android:id="@+id/darkButtonOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/DarkModeOn" />
+
+        <RadioButton
+            android:id="@+id/darkButtonOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/DarkButtonOff" />
+
+        <RadioButton
+            android:id="@+id/darkButtonAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/DarkButtonAuto" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tokenTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/api_kinopoisk"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/darkModeGroup" />
+
+    <EditText
+        android:id="@+id/setToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textVisiblePassword"
+        android:hint="@string/enterToken"
+        app:layout_constraintTop_toBottomOf="@id/tokenTV" />
+
+    <Button
+        android:id="@+id/setTokenButton"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/setDefaultTokenButton"
+        app:layout_constraintTop_toBottomOf="@id/setToken"
+        android:text="@string/submit"
+        android:layout_marginStart="10dp"
+        tools:layout_editor_absoluteY="317dp" />
+
+    <Button
+        android:id="@+id/setDefaultTokenButton"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/setTokenButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/setToken"
+        android:text="@string/guestToken"
+        android:layout_marginHorizontal="10dp"
+        tools:layout_editor_absoluteY="317dp" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        style="@style/MyBottomNavigationView"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

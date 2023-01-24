@@ -1,10 +1,13 @@
 package com.example.kinopoiskapi.presentation.viewModels
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kinopoiskapi.ActivityPreferences
 import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.data.repository.remotes.ApiFactory
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -23,11 +26,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val compositeDisposable:CompositeDisposable = CompositeDisposable()
     private var page:Int = 1
 
-    fun loadMovies() {
+    fun loadMovies(context: Context) {
         if (_isLoading.value == true)
             return
+        val token: String? = ActivityPreferences().getToken(context)
         val disposable: Disposable =
-            ApiFactory.apiService.loadMovies(page)
+            ApiFactory.apiService.loadMovies(page, token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
@@ -36,7 +40,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 .doAfterTerminate {
                     _isLoading.value = false
                 }
-
             .subscribe(
                 {value ->
                     val loadedMovies: MutableList<MovieDto>? = movies.value
@@ -49,13 +52,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
                     Log.d("PAGE", page.toString())
                 },
-                {value -> println("Received: $value") }
+                { val toast = Toast.makeText(context.applicationContext, WARNING, Toast.LENGTH_LONG)
+                    toast.show()
+                     }
             )
         compositeDisposable.add(disposable)
+
     }
 
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
     }
+
+
+
+    companion object{
+        const val WARNING = "Данные о фильмах не загружены из-за неверного значения токена или превышенного количества запросов для гостевого токена"
+    }
+
 }
+
+

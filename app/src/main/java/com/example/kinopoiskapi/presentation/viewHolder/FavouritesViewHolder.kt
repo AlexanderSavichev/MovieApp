@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kinopoiskapi.R
 import com.example.kinopoiskapi.data.repository.models.MovieDto
+import com.example.kinopoiskapi.presentation.adapters.FavouritesAdapter
 import com.example.kinopoiskapi.presentation.elements.RatingDefiner
 
 class FavouritesViewHolder(itemView:View):RecyclerView.ViewHolder(itemView) {
@@ -18,7 +19,7 @@ class FavouritesViewHolder(itemView:View):RecyclerView.ViewHolder(itemView) {
     private val textViewRatingIMDB: TextView = itemView.findViewById(R.id.textViewRatingIMDB)
     private val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
 
-    fun bind (movie:MovieDto){
+    fun bind (movie:MovieDto, clickListener: FavouritesAdapter.MovieClickListener){
         Glide.with(itemView)
             .load(movie.poster.url)
             .into(imageViewPoster)
@@ -39,5 +40,9 @@ class FavouritesViewHolder(itemView:View):RecyclerView.ViewHolder(itemView) {
         textViewRatingIMDB.background = backgroundImdb
         textViewRatingIMDB.text = movie.rating.imdb.toString()
         textViewDescription.text = movie.shortDescription
+
+        itemView.setOnClickListener {
+            clickListener.onMovieClick(movie)
+        }
     }
 }

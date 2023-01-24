@@ -22,7 +22,7 @@ abstract class MovieDatabase: RoomDatabase() {
             return INSTANCE
         }
 
-        private fun buildDatabase(context: Context): MovieDatabase?{
+        private fun buildDatabase(context: Context): MovieDatabase {
             return Room.databaseBuilder(
                 context.applicationContext,
                 MovieDatabase::class.java,

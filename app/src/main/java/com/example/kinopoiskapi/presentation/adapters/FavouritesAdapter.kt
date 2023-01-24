@@ -9,7 +9,7 @@ import com.example.kinopoiskapi.R
 import com.example.kinopoiskapi.data.repository.models.MovieDto
 import com.example.kinopoiskapi.presentation.viewHolder.FavouritesViewHolder
 
-class FavouritesAdapter: RecyclerView.Adapter<FavouritesViewHolder>() {
+class FavouritesAdapter(private val clickListener: MovieClickListener): RecyclerView.Adapter<FavouritesViewHolder>() {
 
     private val movies: MutableList<MovieDto> = ArrayList()
     fun setData(newList: List<MovieDto>) {
@@ -28,10 +28,14 @@ class FavouritesAdapter: RecyclerView.Adapter<FavouritesViewHolder>() {
 
     override fun onBindViewHolder(holder: FavouritesViewHolder, position: Int) {
         val movie: MovieDto = movies[position]
-        holder.bind(movie)
+        holder.bind(movie, clickListener)
     }
 
     override fun getItemCount(): Int {
         return movies.size
+    }
+
+    interface MovieClickListener {
+        fun onMovieClick(movie: MovieDto)
     }
 }

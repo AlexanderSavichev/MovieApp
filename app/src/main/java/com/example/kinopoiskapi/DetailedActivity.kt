@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,6 +18,7 @@ import com.example.kinopoiskapi.presentation.adapters.TrailerAdapter
 import com.example.kinopoiskapi.presentation.elements.RatingDefiner
 import com.example.kinopoiskapi.presentation.viewModels.DetailedViewModel
 import com.example.kinopoiskapi.presentation.views.FavouriteView
+import java.io.Serializable
 
 
 class DetailedActivity : AppCompatActivity() {
@@ -33,7 +35,9 @@ class DetailedActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[DetailedViewModel::class.java]
 
-        val movies: MovieDto = intent.getSerializableExtra(EXTRA_MOVIE) as MovieDto
+
+        val movies: MovieDto = getSerializable(this, MovieDto::class.java)
+
         adapter = TrailerAdapter(object : TrailerAdapter.TrailerClickListener {
             override fun onPlayClick(trailer: TrailerDto, position: Int) {
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -59,7 +63,7 @@ class DetailedActivity : AppCompatActivity() {
         binding.trailerRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        viewModel.loadTrailers(movies.id)
+        viewModel.loadTrailers(movies.id, this)
         viewModel.trailers.observe(this) {
             adapter.setData(it)
         }
@@ -86,6 +90,28 @@ class DetailedActivity : AppCompatActivity() {
         binding.DetailedTitleId.text = movies.name
         binding.DetailedYearId.text = movies.year.toString()
         binding.DetailedDescriptionId.text = movies.description
+
+        binding.navView.setOnItemSelectedListener {item->
+            when (item.itemId){
+                R.id.navigation_favourites -> {startActivity(ActivityFavourites().favouriteIntent(this))
+                    true}
+                R.id.navigation_home -> {startActivity(MainActivity().mainIntent(this))
+                true}
+                R.id.navigation_settings -> {startActivity(ActivityPreferences().settingsIntent(this))
+                    true}
+                R.id.navigation_search -> {startActivity(ActivitySearch().searchIntent(this))
+                    true}
+                else -> false
+            }
+        }
+    }
+
+    private fun <MovieDto : Serializable?> getSerializable(detailedActivity: DetailedActivity, java: Class<MovieDto>): MovieDto {
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            detailedActivity.intent.getSerializableExtra(EXTRA_MOVIE, java)!!
+        else
+            @Suppress("UNCHECKED_CAST", "DEPRECATION")
+            detailedActivity.intent.getSerializableExtra(EXTRA_MOVIE) as MovieDto
     }
 
     companion object {
