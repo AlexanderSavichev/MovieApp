@@ -2,7 +2,7 @@
 #### This is Movie Android App
 This App is for browsing, searching, saving list of movies via kinopoisk.ru
 
-![This is Leaflet App](https://i.ibb.co/HTTnpHN/front.jpg)
+![This is Movie App](https://i.ibb.co/HTTnpHN/front.jpg)
 
 Skills: Kotlin/Android/Retrofit/RxJava/Room/MVVM
 
