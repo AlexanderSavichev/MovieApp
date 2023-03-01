@@ -4,7 +4,9 @@ import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ApiFactory {
+
+class ApiFactory
+{
     companion object {
         private const val BASE_URL = "https://api.kinopoisk.dev"
         private val retrofit:Retrofit = Retrofit.Builder()

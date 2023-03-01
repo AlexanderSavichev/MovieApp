@@ -18,5 +18,3 @@ interface ApiService {
                      @Query("token") token:String?)
     :Single<TrailerResponse>
 }
-
-//token=647P77P-HSXMYYE-G788D1Q-NRWWNC9
